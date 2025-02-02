@@ -1,8 +1,6 @@
 package com.api.todolist.entities;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import jakarta.persistence.Column;
@@ -10,7 +8,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -26,9 +23,6 @@ public class Category implements Serializable{
 	
 	@Column(name = "category_name")
 	private String name;
-	
-	@OneToMany(mappedBy = "categoryList")
-	private List<ListItem> lists = new ArrayList<>();
 	
 	public static long getSerialversionuid() {
 		return serialVersionUID;
@@ -58,10 +52,6 @@ public class Category implements Serializable{
 
 	public void setName(String name) {
 		this.name = name;
-	}
-	
-	public List<ListItem> getLists() {
-		return lists;
 	}
 
 	@Override

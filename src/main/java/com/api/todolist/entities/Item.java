@@ -10,32 +10,32 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "list")
-public class ListItem implements Serializable{
+@Table(name = "item")
+public class Item implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "list_id")
+	@Column(name = "item_id")
 	private Long id;
 	
-	@Column(name = "list_name")
+	@Column(name = "item_name")
 	private String name;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "category_id")	
-	private Category categoryList;
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "list_id")
+	private ListItem listBelonging;
 	
-	public ListItem() {
+	public Item() {
 		super();
 	}
 
-	public ListItem(Long id, String name) {
+	public Item(Long id, String name) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -57,8 +57,8 @@ public class ListItem implements Serializable{
 		this.name = name;
 	}
 	
-	public Category getCategory() {
-		return categoryList;
+	public ListItem getListBelonging() {
+		return listBelonging;
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class ListItem implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ListItem other = (ListItem) obj;
+		Item other = (Item) obj;
 		return Objects.equals(id, other.id);
 	}
 	

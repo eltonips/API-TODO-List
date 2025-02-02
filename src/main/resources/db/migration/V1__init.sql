@@ -11,7 +11,7 @@ CREATE TABLE APITodoList.dbo.list (
 	category_id int NOT NULL,
 	CONSTRAINT PK_list
         PRIMARY KEY NONCLUSTERED (list_id),
-    CONSTRAINT FK_lists FOREIGN KEY (category_id)
+    CONSTRAINT FK_lists FOREIGN KEY (categoryList)
         REFERENCES APITodoList.dbo.category(category_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE

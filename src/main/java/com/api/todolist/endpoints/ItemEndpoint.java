@@ -15,28 +15,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.api.todolist.entities.ListItem;
-import com.api.todolist.service.ListItemService;
+import com.api.todolist.entities.Item;
+import com.api.todolist.service.ItemService;
 
 @RestController
-@RequestMapping(value = "/lists")
-public class ListEndpoint {
-	
+@RequestMapping(value = "/items")
+public class ItemEndpoint {
+
 	@Autowired
-	private ListItemService service;
+	private ItemService service;
 	
 	@GetMapping
-	public ResponseEntity<List<ListItem>> findAll() {
+	public ResponseEntity<List<Item>> findAll() {
 		return ResponseEntity.ok().body(service.findAll());
 	}
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<ListItem> findById(@PathVariable Long id) {
+	public ResponseEntity<Item> findById(Long id) {
 		return ResponseEntity.ok().body(service.findById(id));
 	}
 	
 	@PostMapping
-	public ResponseEntity<ListItem> insert(@RequestBody ListItem obj) {
+	public ResponseEntity<Item> insert(@RequestBody Item obj) {
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).body(obj);
@@ -49,7 +49,7 @@ public class ListEndpoint {
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<ListItem> update(@PathVariable Long id, @RequestBody ListItem obj) {
+	public ResponseEntity<Item> update(@PathVariable Long id, @RequestBody Item obj) {
 		obj = service.update(id, obj);
 		return ResponseEntity.ok().body(obj);
 	}

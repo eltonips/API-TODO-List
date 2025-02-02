@@ -8,30 +8,30 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import com.api.todolist.entities.ListItem;
-import com.api.todolist.repositories.ListItemRepository;
+import com.api.todolist.entities.Item;
+import com.api.todolist.repositories.ItemRepository;
 import com.api.todolist.service.exceptions.DatabaseException;
 import com.api.todolist.service.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
-public class ListItemService {
-	
+public class ItemService {
+
 	@Autowired
-	private ListItemRepository repository;
+	private ItemRepository repository;
 	
-	public List<ListItem> findAll() {
+	public List<Item> findAll() {
 		return repository.findAll();
 	}
 	
-	public ListItem findById(Long id) {
-		Optional<ListItem> obj = repository.findById(id); 
+	public Item findById(Long id) {
+		Optional<Item> obj = repository.findById(id); 
 		return obj.get();
 	}
 	
-	public ListItem insert(ListItem obj) {
-		return repository.save(obj);				
+	public Item insert(Item obj) {
+		return repository.save(obj);
 	}
 	
 	public void delete(Long id) {
@@ -44,14 +44,13 @@ public class ListItemService {
 		}
 	}
 	
-	public ListItem update(Long id, ListItem obj) {
+	public Item update(Long id, Item obj) {
 		try {
-			ListItem entity = repository.getReferenceById(id);
+			Item entity = repository.getReferenceById(id);
 			entity.setName(obj.getName());
 			return repository.save(entity);
 		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException(id);
 		}
 	}
-
 }
