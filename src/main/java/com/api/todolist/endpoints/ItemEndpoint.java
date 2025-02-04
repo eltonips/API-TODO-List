@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.api.todolist.dto.ItemDTO;
 import com.api.todolist.entities.Item;
 import com.api.todolist.service.ItemService;
 
@@ -36,10 +37,10 @@ public class ItemEndpoint {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Item> insert(@RequestBody Item obj) {
-		obj = service.insert(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-		return ResponseEntity.created(uri).body(obj);
+	public ResponseEntity<ItemDTO> insert(@RequestBody ItemDTO itemDto) {
+		ItemDTO itemRes = service.insert(itemDto);		
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(itemRes.getId()).toUri();
+		return ResponseEntity.created(uri).body(itemRes);
 	}
 	
 	@DeleteMapping(value = "/{id}")

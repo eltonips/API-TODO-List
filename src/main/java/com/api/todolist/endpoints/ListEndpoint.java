@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.api.todolist.dto.ListItemDTO;
 import com.api.todolist.entities.ListItem;
 import com.api.todolist.service.ListItemService;
 
@@ -26,20 +27,20 @@ public class ListEndpoint {
 	private ListItemService service;
 	
 	@GetMapping
-	public ResponseEntity<List<ListItem>> findAll() {
+	public ResponseEntity<List<ListItemDTO>> findAll() {
 		return ResponseEntity.ok().body(service.findAll());
 	}
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<ListItem> findById(@PathVariable Long id) {
-		return ResponseEntity.ok().body(service.findById(id));
+	public ResponseEntity<ListItemDTO> findById(@PathVariable Long id) {
+		return ResponseEntity.ok().body(service.findByIdDto(id));
 	}
 	
 	@PostMapping
 	public ResponseEntity<ListItem> insert(@RequestBody ListItem obj) {
-		obj = service.insert(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-		return ResponseEntity.created(uri).body(obj);
+		ListItem listItem = service.insert(obj); 
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(listItem.getId()).toUri();
+		return ResponseEntity.created(uri).body(listItem);
 	}
 	
 	@DeleteMapping(value = "/{id}")

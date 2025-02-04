@@ -1,16 +1,19 @@
 package com.api.todolist.entities;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -21,24 +24,24 @@ public class ListItem implements Serializable{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "list_id")
+	@Column(name = "id", nullable = false)
 	private Long id;
 	
-	@Column(name = "list_name")
-	private String name;
+	@Column(name = "nome", nullable = false)
+	private String nome;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "category_id")	
-	private Category categoryList;
+	@JsonIgnore
+	@OneToMany(mappedBy = "listItemId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<Item> items;
 	
 	public ListItem() {
 		super();
 	}
 
-	public ListItem(Long id, String name) {
+	public ListItem(Long id, String nome) {
 		super();
 		this.id = id;
-		this.name = name;
+		this.nome = nome;
 	}
 
 	public Long getId() {
@@ -49,18 +52,22 @@ public class ListItem implements Serializable{
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getNome() {
+		return nome;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setNome(String name) {
+		this.nome = name;
+	}	
+
+	public List<Item> getItems() {
+		return items;
+	}
+
+	public void setItems(List<Item> items) {
+		this.items = items;
 	}
 	
-	public Category getCategory() {
-		return categoryList;
-	}
-
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -77,5 +84,6 @@ public class ListItem implements Serializable{
 		ListItem other = (ListItem) obj;
 		return Objects.equals(id, other.id);
 	}
+
 	
 }

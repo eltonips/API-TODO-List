@@ -3,6 +3,8 @@ package com.api.todolist.entities;
 import java.io.Serializable;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -10,7 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -20,25 +22,26 @@ public class Item implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "item_id")
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", nullable = false)
 	private Long id;
 	
-	@Column(name = "item_name")
-	private String name;
+	@Column(name = "nome", nullable = false)
+	private String nome;
 	
-	@OneToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "list_id")
-	private ListItem listBelonging;
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "listitem_id")
+	private ListItem listItemId;
 	
 	public Item() {
 		super();
 	}
 
-	public Item(Long id, String name) {
+	public Item(Long id, String nome) {
 		super();
 		this.id = id;
-		this.name = name;
+		this.nome = nome;
 	}
 
 	public Long getId() {
@@ -49,16 +52,20 @@ public class Item implements Serializable{
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getNome() {
+		return nome;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
+	public void setNome(String nome) {
+		this.nome = nome;
+	}	
 	
-	public ListItem getListBelonging() {
-		return listBelonging;
+	public ListItem getListItemId() {
+		return listItemId;
+	}
+
+	public void setListItemId(ListItem listItemId) {
+		this.listItemId = listItemId;
 	}
 
 	@Override
@@ -77,5 +84,6 @@ public class Item implements Serializable{
 		Item other = (Item) obj;
 		return Objects.equals(id, other.id);
 	}
+
 	
 }
